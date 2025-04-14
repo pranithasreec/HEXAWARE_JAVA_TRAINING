@@ -1,0 +1,258 @@
+1. Create an abstract class BankAccount that represents a generic bank account. It should include
+the following attributes and methods:
+• Attributes:
+o Account number.
+o Customer name.
+o Balance.
+• Constructors:
+o Implement default constructors and overload the constructor with Account
+attributes, generate getter and setter, print all information of attribute methods
+for the attributes.
+• Abstract methods:
+o deposit(amount: float): Deposit the specified amount into the account.
+o withdraw(amount: float): Withdraw the specified amount from the account
+(implement error handling for insufficient funds).
+o calculate_interest(): Abstract method for calculating interest.
+
+2. Create two concrete classes that inherit from BankAccount:
+• SavingsAccount: A savings account that includes an additional attribute for interest rate.
+Implement the calculate_interest() method to calculate interest based on the balance
+and interest rate.
+• CurrentAccount: A current account with no interest. Implement the withdraw() method
+to allow overdraft up to a certain limit (configure a constant for the overdraft limit).
+3. Create a Bank class to represent the banking system. Perform the following operation in main
+method:
+• Display menu for user to create object for account class by calling parameter
+constructor. Menu should display options `SavingsAccount` and `CurrentAccount`. user
+can choose any one option to create account. use switch case for implementation.
+create_account should display sub menu to choose type of accounts.
+o Hint: Account acc = new SavingsAccount(); or Account acc = new
+CurrentAccount();
+• deposit(amount: float): Deposit the specified amount into the account.
+• withdraw(amount: float): Withdraw the specified amount from the account. For saving
+account withdraw amount only if there is sufficient fund else display insufficient balance.
+For Current Account withdraw limit can exceed the available balance and should not
+exceed the overdraft limit.
+• calculate_interest(): Calculate and add interest to the account balance for savings
+accounts.
+
+
+package com.hexaware.entity;
+
+public abstract class BankAccount {
+    private int accountNumber;
+    private String customerName;
+    protected double balance;
+
+    public BankAccount() {}
+
+    public BankAccount(int accountNumber, String customerName, double balance) {
+        this.accountNumber = accountNumber;
+        this.customerName = customerName;
+        this.balance = balance;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void printAccountDetails() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Balance: " + balance);
+    }
+
+    public abstract void deposit(float amount);
+    public abstract void withdraw(float amount);
+    public abstract void calculateInterest();
+}
+
+
+
+package com.hexaware.entity;
+
+public class SavingsAccount extends BankAccount {
+    private double interestRate;
+
+    public SavingsAccount() {}
+
+    public SavingsAccount(int accountNumber, String customerName, double balance, double interestRate) {
+        super(accountNumber, customerName, balance);
+        this.interestRate = interestRate;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    @Override
+    public void deposit(float amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println(amount + " deposited successfully");
+        } else {
+            System.out.println("Invalid deposit amount");
+        }
+    }
+
+    @Override
+    public void withdraw(float amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println(amount + " withdrawn successfully");
+        } else {
+            System.out.println("Insufficient funds or invalid amount");
+        }
+    }
+
+    @Override
+    public void calculateInterest() {
+        double interest = balance * interestRate / 100;
+        balance += interest;
+        System.out.println("Interest of " + interest + " added. New Balance: " + balance);
+    }
+}
+
+
+package com.hexaware.entity;
+
+public class CurrentAccount extends BankAccount {
+    private static final double OVERDRAFT_LIMIT = 10000.0;
+
+    public CurrentAccount() {}
+
+    public CurrentAccount(int accountNumber, String customerName, double balance) {
+        super(accountNumber, customerName, balance);
+    }
+
+    @Override
+    public void deposit(float amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println(amount + " deposited successfully");
+        } else {
+            System.out.println("Invalid deposit amount");
+        }
+    }
+
+    @Override
+    public void withdraw(float amount) {
+        if (amount > 0 && amount <= (balance + OVERDRAFT_LIMIT)) {
+            balance -= amount;
+            System.out.println(amount + " withdrawn successfully");
+        } else {
+            System.out.println("Overdraft limit exceeded or invalid amount");
+        }
+    }
+
+    @Override
+    public void calculateInterest() {
+        System.out.println("Current accounts do not earn interest");
+    }
+}
+
+
+package com.hexaware.app;
+
+import com.hexaware.entity.BankAccount;
+import com.hexaware.entity.SavingsAccount;
+import com.hexaware.entity.CurrentAccount;
+
+import java.util.Scanner;
+
+public class Bank {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BankAccount account = null;
+
+        System.out.println("Welcome to Hexaware Bank");
+        System.out.println("Choose Account Type:");
+        System.out.println("1. Savings Account");
+        System.out.println("2. Current Account");
+        int choice = sc.nextInt();
+
+        System.out.print("Enter Account Number: ");
+        int accNum = sc.nextInt();
+        sc.nextLine(); // consume newline
+        System.out.print("Enter Customer Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Opening Balance: ");
+        double balance = sc.nextDouble();
+
+        switch (choice) {
+            case 1:
+                System.out.print("Enter Interest Rate: ");
+                double rate = sc.nextDouble();
+                account = new SavingsAccount(accNum, name, balance, rate);
+                break;
+            case 2:
+                account = new CurrentAccount(accNum, name, balance);
+                break;
+            default:
+                System.out.println("Invalid choice");
+                return;
+        }
+
+        int option;
+        do {
+            System.out.println("\n----- Menu -----");
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Calculate Interest");
+            System.out.println("4. View Account Details");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            option = sc.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Enter amount to deposit: ");
+                    float depositAmount = sc.nextFloat();
+                    account.deposit(depositAmount);
+                    break;
+                case 2:
+                    System.out.print("Enter amount to withdraw: ");
+                    float withdrawAmount = sc.nextFloat();
+                    account.withdraw(withdrawAmount);
+                    break;
+                case 3:
+                    account.calculateInterest();
+                    break;
+                case 4:
+                    account.printAccountDetails();
+                    break;
+                case 5:
+                    System.out.println("Thank you for using Hexaware Bank");
+                    break;
+                default:
+                    System.out.println("Invalid option");
+            }
+        } while (option != 5);
+
+        sc.close();
+    }
+}
