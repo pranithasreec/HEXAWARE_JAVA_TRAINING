@@ -1,0 +1,406 @@
+1. Create a `Customer` class with the following attributes:
+• Customer ID
+• First Name
+• Last Name
+• Email Address (validate with valid email address)
+• Phone Number (Validate 10-digit phone number)
+• Address
+• Methods and Constructor:
+o Implement default constructors and overload the constructor with Account
+attributes, generate getter, setter, print all information of attribute) methods for
+the attributes.
+
+2. Create an `Account` class with the following attributes:
+• Account Number (a unique identifier).
+• Account Type (e.g., Savings, Current)
+• Account Balance
+• Customer (the customer who owns the account)
+• Methods and Constructor:
+o Implement default constructors and overload the constructor with Account
+attributes, generate getter, setter, (print all information of attribute) methods for
+the attributes.
+
+Create a Bank Class and must have following requirements:
+1. Create a Bank class to represent the banking system. It should have the following methods:
+• create_account(Customer customer, long accNo, String accType, float balance): Create
+a new bank account for the given customer with the initial balance.
+• get_account_balance(account_number: long): Retrieve the balance of an account given
+its account number. should return the current balance of account.
+• deposit(account_number: long, amount: float): Deposit the specified amount into the
+account. Should return the current balance of account.
+• withdraw(account_number: long, amount: float): Withdraw the specified amount from
+the account. Should return the current balance of account.
+• transfer(from_account_number: long, to_account_number: int, amount: float):
+Transfer money from one account to another.
+• getAccountDetails(account_number: long): Should return the account and customer
+details.
+
+2. Ensure that account numbers are automatically generated when an account is created, starting
+from 1001 and incrementing for each new account.
+
+© Hexaware Technologies Limited. All rights www.hexaware.com
+3. Create a BankApp class with a main method to simulate the banking system. Allow the user to
+interact with the system by entering commands such as "create_account", "deposit",
+"withdraw", "get_balance", "transfer", "getAccountDetails" and "exit." create_account should
+display sub menu to choose type of accounts and repeat this operation until user exit.1. Create a `Customer` class with the following attributes:
+• Customer ID
+• First Name
+• Last Name
+• Email Address (validate with valid email address)
+• Phone Number (Validate 10-digit phone number)
+• Address
+• Methods and Constructor:
+o Implement default constructors and overload the constructor with Account
+attributes, generate getter, setter, print all information of attribute) methods for
+the attributes.
+
+2. Create an `Account` class with the following attributes:
+• Account Number (a unique identifier).
+• Account Type (e.g., Savings, Current)
+• Account Balance
+• Customer (the customer who owns the account)
+• Methods and Constructor:
+o Implement default constructors and overload the constructor with Account
+attributes, generate getter, setter, (print all information of attribute) methods for
+the attributes.
+
+Create a Bank Class and must have following requirements:
+1. Create a Bank class to represent the banking system. It should have the following methods:
+• create_account(Customer customer, long accNo, String accType, float balance): Create
+a new bank account for the given customer with the initial balance.
+• get_account_balance(account_number: long): Retrieve the balance of an account given
+its account number. should return the current balance of account.
+• deposit(account_number: long, amount: float): Deposit the specified amount into the
+account. Should return the current balance of account.
+• withdraw(account_number: long, amount: float): Withdraw the specified amount from
+the account. Should return the current balance of account.
+• transfer(from_account_number: long, to_account_number: int, amount: float):
+Transfer money from one account to another.
+• getAccountDetails(account_number: long): Should return the account and customer
+details.
+
+2. Ensure that account numbers are automatically generated when an account is created, starting
+from 1001 and incrementing for each new account.
+
+3. Create a BankApp class with a main method to simulate the banking system. Allow the user to
+interact with the system by entering commands such as "create_account", "deposit",
+"withdraw", "get_balance", "transfer", "getAccountDetails" and "exit." create_account should
+display sub menu to choose type of accounts and repeat this operation until user exit.
+
+
+package com.hexaware.entity;
+public class Customer {
+    private int customerId;
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+    private String phoneNumber;
+    private String address;
+
+    public Customer() {}
+
+    public Customer(int customerId, String firstName, String lastName, String emailAddress, String phoneNumber, String address) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        setEmailAddress(emailAddress);
+        setPhoneNumber(phoneNumber);
+        this.address = address;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        if (emailAddress.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            this.emailAddress = emailAddress;
+        } else {
+            System.out.println("Invalid email address format");
+        }
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        if (phoneNumber.matches("\\d{10}")) {
+            this.phoneNumber = phoneNumber;
+        } else {
+            System.out.println("Invalid phone number. Must be 10 digits");
+        }
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void printCustomerDetails() {
+        System.out.println("Customer ID: " + customerId);
+        System.out.println("Name: " + firstName + " " + lastName);
+        System.out.println("Email: " + emailAddress);
+        System.out.println("Phone: " + phoneNumber);
+        System.out.println("Address: " + address);
+    }
+}
+
+
+
+
+package com.hexaware.entity;
+
+public class Account {
+    private long accountNumber;
+    private String accountType;
+    private float accountBalance;
+    private Customer customer;
+
+    public Account() {}
+
+    public Account(long accountNumber, String accountType, float accountBalance, Customer customer) {
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.accountBalance = accountBalance;
+        this.customer = customer;
+    }
+
+    public long getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public float getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(float accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public void printAccountDetails() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Type: " + accountType);
+        System.out.println("Account Balance: " + accountBalance);
+        if (customer != null) {
+            customer.printCustomerDetails();
+        }
+    }
+}
+
+
+
+package com.hexaware.service;
+import com.hexaware.entity.Account;
+import com.hexaware.entity.Customer;
+import java.util.HashMap;
+import java.util.Map;
+public class Banks {
+    private static long nextAccountNumber = 1001;
+    private Map<Long, Account> accounts = new HashMap<>();
+    public Account createAccount(Customer customer, String accType, float balance) {
+        long accNo = nextAccountNumber++;
+        Account account = new Account(accNo, accType, balance, customer);
+        accounts.put(accNo, account);
+        System.out.println("Account created successfully with account number: " + accNo);
+        return account;
+    }
+    public float getAccountBalance(long accountNumber) {
+        Account account = accounts.get(accountNumber);
+        if (account != null) {
+            return account.getAccountBalance();
+        } else {
+            System.out.println("Account not found");
+            return 0;
+        }
+    }
+    public float deposit(long accountNumber, float amount) {
+        Account account = accounts.get(accountNumber);
+        if (account != null) {
+            float newBalance = account.getAccountBalance() + amount;
+            account.setAccountBalance(newBalance);
+            return newBalance;
+        } else {
+            System.out.println("Account not found");
+            return 0;
+        }
+    }
+    public float withdraw(long accountNumber, float amount) {
+        Account account = accounts.get(accountNumber);
+        if (account != null) {
+            float currentBalance = account.getAccountBalance();
+            if (amount <= currentBalance) {
+                float newBalance = currentBalance - amount;
+                account.setAccountBalance(newBalance);
+                return newBalance;
+            } else {
+                System.out.println("Insufficient balance");
+            }
+        } else {
+            System.out.println("Account not found");
+        }
+        return 0;
+    }
+    public void transfer(long fromAcc, long toAcc, float amount) {
+        Account fromAccount = accounts.get(fromAcc);
+        Account toAccount = accounts.get(toAcc);
+
+        if (fromAccount == null || toAccount == null) {
+            System.out.println("One or both account numbers are invalid");
+            return;
+        }
+        if (fromAccount.getAccountBalance() >= amount) {
+            fromAccount.setAccountBalance(fromAccount.getAccountBalance() - amount);
+            toAccount.setAccountBalance(toAccount.getAccountBalance() + amount);
+            System.out.println("Transfer successful");
+        } else {
+            System.out.println("Insufficient funds in source account");
+        }
+    }
+    public void getAccountDetails(long accountNumber) {
+        Account account = accounts.get(accountNumber);
+        if (account != null) {
+            account.printAccountDetails();
+        } else {
+            System.out.println("Account not found");
+        }
+    }
+}
+
+
+
+package com.hexaware.app;
+import com.hexaware.entity.Customer;
+import com.hexaware.entity.Account;
+import com.hexaware.service.Banks;
+import java.util.Scanner;
+public class Bank {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Banks bank = new Banks();
+        boolean running = true;
+        while (running) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Create Account");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Get Balance");
+            System.out.println("5. Transfer");
+            System.out.println("6. Get Account Details");
+            System.out.println("7. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Customer ID: ");
+                    int custId = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter First Name: ");
+                    String fName = sc.nextLine();
+                    System.out.print("Enter Last Name: ");
+                    String lName = sc.nextLine();
+                    System.out.print("Enter Email: ");
+                    String email = sc.nextLine();
+                    System.out.print("Enter Phone: ");
+                    String phone = sc.nextLine();
+                    System.out.print("Enter Address: ");
+                    String address = sc.nextLine();
+                    System.out.print("Enter Account Type (Savings/Current): ");
+                    String accType = sc.nextLine();
+                    System.out.print("Enter Initial Balance: ");
+                   float balance = sc.nextFloat();
+                    Customer cust = new Customer(custId, fName, lName, email, phone, address);
+                    bank.createAccount(cust, accType, balance);
+                    break;
+                case 2:
+                    System.out.print("Enter Account Number: ");
+                    long accNo = sc.nextLong();
+                    System.out.print("Enter Amount to Deposit: ");
+                    float depAmt = sc.nextFloat();
+                    System.out.println("Updated Balance: " + bank.deposit(accNo, depAmt));
+                    break;
+                case 3:
+                    System.out.print("Enter Account Number: ");
+                    accNo = sc.nextLong();
+                    System.out.print("Enter Amount to Withdraw: ");
+                    float withAmt = sc.nextFloat();
+                    System.out.println("Updated Balance: " + bank.withdraw(accNo, withAmt));
+                    break;
+                case 4:
+                    System.out.print("Enter Account Number: ");
+                    accNo = sc.nextLong();
+                    System.out.println("Current Balance: " + bank.getAccountBalance(accNo));
+                    break;
+                case 5:
+                    System.out.print("From Account Number: ");
+                    long fromAcc = sc.nextLong();
+                    System.out.print("To Account Number: ");
+                    long toAcc = sc.nextLong();
+                    System.out.print("Amount to Transfer: ");
+                    float transAmt = sc.nextFloat();
+                    bank.transfer(fromAcc, toAcc, transAmt);
+                    break;
+                case 6:
+                    System.out.print("Enter Account Number: ");
+                    accNo = sc.nextLong();
+                    bank.getAccountDetails(accNo);
+                    break;
+                case 7:
+                    running = false;
+                    System.out.println("Exiting Bank System");
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
+        sc.close();
+    }
+}
