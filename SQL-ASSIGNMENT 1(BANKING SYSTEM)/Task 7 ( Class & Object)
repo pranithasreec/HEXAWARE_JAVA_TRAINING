@@ -1,0 +1,183 @@
+1. Create a `Customer` class with the following confidential attributes:
+• Attributes
+o Customer ID
+o First Name
+o Last Name
+o Email Address
+o Phone Number
+o Address
+• Constructor and Methods
+o Implement default constructors and overload the constructor with Customer
+attributes, generate getter and setter, (print all information of attribute) methods for
+the attributes.
+
+2. Create an `Account` class with the following confidential attributes:
+• Attributes
+o Account Number
+o Account Type (e.g., Savings, Current)
+o Account Balance
+• Constructor and Methods
+o Implement default constructors and overload the constructor with Account
+attributes,
+o Generate getter and setter, (print all information of attribute) methods for the
+attributes.
+o Add methods to the `Account` class to allow deposits and withdrawals.
+- deposit(amount: float): Deposit the specified amount into the account.
+
+- withdraw(amount: float): Withdraw the specified amount from the account.
+withdraw amount only if there is sufficient fund else display insufficient
+balance.
+- calculate_interest(): method for calculating interest amount for the available
+balance. interest rate is fixed to 4.5%
+
+• Create a Bank class to represent the banking system. Perform the following operation in
+main method:
+o create object for account class by calling parameter constructor.
+o deposit(amount: float): Deposit the specified amount into the account.
+o withdraw(amount: float): Withdraw the specified amount from the account.
+o calculate_interest(): Calculate and add interest to the account balance for savings
+accounts.
+
+
+package com.hexaware.entity;
+
+public class Customer {
+    // Confidential attributes
+    private int customerId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private String address;
+
+    // Default constructor
+    public Customer() {}
+
+    // Parameterized constructor
+    public Customer(int customerId, String firstName, String lastName, String email, String phone, String address) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+    }
+
+    // Getters and Setters
+    public int getCustomerId() { return customerId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    // Print customer information
+    public void printCustomerDetails() {
+        System.out.println("Customer ID: " + customerId);
+        System.out.println("Name: " + firstName + " " + lastName);
+        System.out.println("Email: " + email);
+        System.out.println("Phone: " + phone);
+        System.out.println("Address: " + address);
+    }
+}
+
+package com.hexaware.entity;
+
+public class Account {
+    // Confidential attributes
+    private int accountNumber;
+    private String accountType;
+    private double accountBalance;
+
+    // Default constructor
+    public Account() {}
+
+    // Parameterized constructor
+    public Account(int accountNumber, String accountType, double accountBalance) {
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.accountBalance = accountBalance;
+    }
+
+    // Getters and Setters
+    public int getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(int accountNumber) { this.accountNumber = accountNumber; }
+
+    public String getAccountType() { return accountType; }
+    public void setAccountType(String accountType) { this.accountType = accountType; }
+
+    public double getAccountBalance() { return accountBalance; }
+    public void setAccountBalance(double accountBalance) { this.accountBalance = accountBalance; }
+
+    // Print account details
+    public void printAccountDetails() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Type: " + accountType);
+        System.out.println("Account Balance: " + accountBalance);
+    }
+
+    // Deposit method
+    public void deposit(double amount) {
+        if (amount > 0) {
+            accountBalance += amount;
+            System.out.println(amount + " deposited successfully.");
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    // Withdraw method
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= accountBalance) {
+            accountBalance -= amount;
+            System.out.println(amount + " withdrawn successfully.");
+        } else {
+            System.out.println("Insufficient balance or invalid amount.");
+        }
+    }
+
+    // Interest calculation
+    public void calculateInterest() {
+        double interestRate = 4.5 / 100;
+        double interest = accountBalance * interestRate;
+        accountBalance += interest;
+        System.out.println("Interest of " + interest + " added. New Balance: " + accountBalance);
+    }
+}
+
+package com.hexaware.app;
+
+import com.hexaware.entity.Account;
+
+public class Bank {
+    public static void main(String[] args) {
+        // Create Account using parameterized constructor
+        Account acc = new Account(1001, "Savings", 10000);
+
+        // Print account details
+        acc.printAccountDetails();
+
+        // Deposit operation
+        acc.deposit(5000);
+
+        // Withdraw operation
+        acc.withdraw(3000);
+
+        // Interest calculation
+        acc.calculateInterest();
+
+        // Final account details
+        acc.printAccountDetails();
+    }
+}
