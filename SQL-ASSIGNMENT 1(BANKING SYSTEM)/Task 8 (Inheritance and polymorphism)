@@ -1,0 +1,187 @@
+package com.hexaware.entity;
+
+public class Account {
+    private int accountNumber;
+    private String accountType;
+    protected double accountBalance;
+
+    public Account() {}
+
+    public Account(int accountNumber, String accountType, double accountBalance) {
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.accountBalance = accountBalance;
+    }
+
+    public int getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(int accountNumber) { this.accountNumber = accountNumber; }
+
+    public String getAccountType() { return accountType; }
+    public void setAccountType(String accountType) { this.accountType = accountType; }
+
+    public double getAccountBalance() { return accountBalance; }
+    public void setAccountBalance(double accountBalance) { this.accountBalance = accountBalance; }
+
+    public void printAccountDetails() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Type: " + accountType);
+        System.out.println("Account Balance: " + accountBalance);
+    }
+
+    // Overloaded deposit methods
+    public void deposit(float amount) { deposit((double) amount); }
+    public void deposit(int amount) { deposit((double) amount); }
+    public void deposit(double amount) {
+        if (amount > 0) {
+            accountBalance += amount;
+            System.out.println(+ amount + " deposited successfully.");
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    // Overloaded withdraw methods
+    public void withdraw(float amount) { withdraw((double) amount); }
+    public void withdraw(int amount) { withdraw((double) amount); }
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= accountBalance) {
+            accountBalance -= amount;
+            System.out.println(+ amount + " withdrawn successfully.");
+        } else {
+            System.out.println("Insufficient balance or invalid amount.");
+        }
+    }
+
+    public void calculateInterest() {
+        double interestRate = 4.5 / 100;
+        double interest = accountBalance * interestRate;
+        accountBalance += interest;
+        System.out.println("Interest of " + interest + " added. New Balance: ₹" + accountBalance);
+    }
+}
+
+
+
+package com.hexaware.entity;
+
+public class SavingsAccount extends Account {
+    private double interestRate;
+
+    public SavingsAccount(int accountNumber, String accountType, double accountBalance, double interestRate) {
+        super(accountNumber, accountType, accountBalance);
+        this.interestRate = interestRate;
+    }
+
+    public double getInterestRate() { return interestRate; }
+    public void setInterestRate(double interestRate) { this.interestRate = interestRate; }
+
+    @Override
+    public void calculateInterest() {
+        double interest = getAccountBalance() * (interestRate / 100);
+        accountBalance += interest;
+        System.out.println("Interest of " + interest + " added. New Balance: " + accountBalance);
+    }
+}
+
+
+
+package com.hexaware.entity;
+
+public class CurrentAccount extends Account {
+    private static final double OVERDRAFT_LIMIT = 10000;
+
+    public CurrentAccount(int accountNumber, String accountType, double accountBalance) {
+        super(accountNumber, accountType, accountBalance);
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= (accountBalance + OVERDRAFT_LIMIT)) {
+            accountBalance -= amount;
+            System.out.println( + amount + " withdrawn successfully.");
+        } else {
+            System.out.println("Withdrawal exceeds overdraft limit or invalid amount.");
+        }
+    }
+
+    @Override
+    public void calculateInterest() {
+        System.out.println("No interest for current accounts.");
+    }
+}
+
+
+
+package com.hexaware.app;
+
+import com.hexaware.entity.Account;
+import com.hexaware.entity.SavingsAccount;
+import com.hexaware.entity.CurrentAccount;
+
+import java.util.Scanner;
+
+public class BankApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Account account = null;
+
+        System.out.println("Choose Account Type:");
+        System.out.println("1. Savings Account");
+        System.out.println("2. Current Account");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                account = new SavingsAccount(1001, "Savings", 0, 4.5);
+                break;
+            case 2:
+                account = new CurrentAccount(1002, "Current", 0);
+                break;
+            default:
+                System.out.println("Invalid option.");
+                System.exit(0);
+        }
+
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\n---- MENU ----");
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdraw");
+            System.out.println("3. Calculate Interest");
+            System.out.println("4. Print Account Details");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int opt = scanner.nextInt();
+
+            switch (opt) {
+                case 1:
+                    System.out.print("Enter amount to deposit: ");
+                    double depositAmt = scanner.nextDouble();
+                    account.deposit(depositAmt);
+                    break;
+                case 2:
+                    System.out.print("Enter amount to withdraw: ");
+                    double withdrawAmt = scanner.nextDouble();
+                    account.withdraw(withdrawAmt);
+                    break;
+                case 3:
+                    account.calculateInterest();
+                    break;
+                case 4:
+                    account.printAccountDetails();
+                    break;
+                case 5:
+                    exit = true;
+                    System.out.println("Thank you for using Hexaware Bank.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+
+        scanner.close();
+    }
+}
+
+
+
