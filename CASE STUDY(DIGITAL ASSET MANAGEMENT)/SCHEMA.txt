@@ -1,0 +1,57 @@
+show databases;
+CREATE DATABASE IF NOT EXISTS asset_management;
+USE asset_management;
+CREATE TABLE employees (
+    employeeId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    department VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(100)
+);
+CREATE TABLE assets (
+    asset_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(50),
+    serial_number VARCHAR(100),
+    purchase_date DATE,
+    location VARCHAR(100),
+    status VARCHAR(50),
+    owner_id INT,
+    FOREIGN KEY (owner_id) REFERENCES employees(employee_id)
+);
+CREATE TABLE asset_allocations (
+    allocation_id INT AUTO_INCREMENT PRIMARY KEY,
+    asset_id INT,
+    employee_id INT,
+    allocation_date DATE,
+    return_date DATE,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+CREATE TABLE maintenance_records (
+    maintenance_id INT AUTO_INCREMENT PRIMARY KEY,
+    asset_id INT,
+    maintenance_date DATE,
+    description TEXT,
+    cost DECIMAL(10,2),
+    FOREIGN KEY (asset_id) REFERENCES assets(asset_id)
+);
+CREATE TABLE reservations (
+    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+    asset_id INT,
+    employee_id INT,
+    reservation_date DATE,
+    start_date DATE,
+    end_date DATE,
+    status VARCHAR(50),
+    FOREIGN KEY (asset_id) REFERENCES assets(asset_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+select * from assets;
+select * from employees;
+select * from maintenance_records;
+INSERT INTO asset_allocations (asset_id, employee_id, allocation_date, return_date)
+VALUES (2, 1, '2025-04-01', NULL);
+INSERT INTO asset_allocations (asset_id, employee_id, allocation_date, return_date)
+VALUES (7, 2, '2025-04-01', 2024-02-04);
+select * from asset_allocations;
+select * from reservations;
